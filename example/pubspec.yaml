@@ -1,0 +1,21 @@
+name: flutter_notification_system_example
+description: Example app demonstrating Flutter Notification System usage
+version: 1.0.0
+publish_to: 'none'
+
+environment:
+  sdk: ^3.8.1
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_notification_system:
+    path: ../
+  get_it: ^9.2.0
+  provider: ^6.1.5+1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
