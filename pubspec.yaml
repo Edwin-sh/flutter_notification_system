@@ -1,7 +1,7 @@
 name: flutter_notification_system
 description: "A complete notification management system for Flutter following Clean Architecture principles. Supports snackbars, dialogs, error handling, and customizable themes."
 version: 1.0.1
-repository: https://github.com/martinez/flutter_notification_system
+repository: https://github.com/Edwin-sh/flutter_notification_system
 
 environment:
   sdk: ^3.8.1
