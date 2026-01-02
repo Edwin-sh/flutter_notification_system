@@ -137,7 +137,7 @@ class NotificationData extends Equatable {
   }) {
     return NotificationData(
       message: error.message,
-      title: error.title ?? NotificationTypeEnum.error.defaultTitle,
+      title: error.title,
       type: NotificationTypeEnum.error,
       priority: priority,
       error: error,
