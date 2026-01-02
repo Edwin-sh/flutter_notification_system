@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_notification_system/flutter_notification_system.dart';
-import 'package:get_it/get_it.dart';
 
 /// Advanced example demonstrating queue management and priorities
 class AdvancedExamplePage extends StatefulWidget {
@@ -11,11 +10,10 @@ class AdvancedExamplePage extends StatefulWidget {
 }
 
 class _AdvancedExamplePageState extends State<AdvancedExamplePage> {
-  final getIt = GetIt.instance;
-
   @override
   Widget build(BuildContext context) {
-    final notificationVM = getIt<NotificationViewModel>();
+    // Ya no es necesario obtener el ViewModel de GetIt
+    // Se puede usar context.notifications o NotificationSystem directamente
 
     return Scaffold(
       appBar: AppBar(title: const Text('Advanced Features')),
@@ -32,8 +30,8 @@ class _AdvancedExamplePageState extends State<AdvancedExamplePage> {
 
             ElevatedButton(
               onPressed: () {
-                notificationVM.showInfo(
-                  message: 'Low priority notification',
+                context.showInfo(
+                  'Low priority notification',
                   priority: NotificationPriority.low,
                 );
               },
@@ -43,8 +41,8 @@ class _AdvancedExamplePageState extends State<AdvancedExamplePage> {
 
             ElevatedButton(
               onPressed: () {
-                notificationVM.showWarning(
-                  message: 'High priority notification',
+                context.showWarning(
+                  'High priority notification',
                   priority: NotificationPriority.high,
                 );
               },
@@ -54,7 +52,7 @@ class _AdvancedExamplePageState extends State<AdvancedExamplePage> {
 
             ElevatedButton(
               onPressed: () {
-                notificationVM.showError(
+                context.showError(
                   ErrorItem(message: 'Critical error occurred!'),
                   priority: NotificationPriority.critical,
                 );
@@ -76,16 +74,16 @@ class _AdvancedExamplePageState extends State<AdvancedExamplePage> {
             ElevatedButton(
               onPressed: () {
                 // Add multiple notifications to queue
-                notificationVM.showInfo(
-                  message: 'First notification',
+                NotificationSystem.showInfo(
+                  'First notification',
                   priority: NotificationPriority.low,
                 );
-                notificationVM.showInfo(
-                  message: 'Second notification',
+                NotificationSystem.showInfo(
+                  'Second notification',
                   priority: NotificationPriority.normal,
                 );
-                notificationVM.showWarning(
-                  message: 'Third notification (higher priority)',
+                NotificationSystem.showWarning(
+                  'Third notification (higher priority)',
                   priority: NotificationPriority.high,
                 );
               },
@@ -101,8 +99,8 @@ class _AdvancedExamplePageState extends State<AdvancedExamplePage> {
 
             ElevatedButton(
               onPressed: () {
-                notificationVM.showSuccess(
-                  message: 'Short notification (1 second)',
+                context.showSuccess(
+                  'Short notification (1 second)',
                   duration: const Duration(seconds: 1),
                 );
               },
@@ -112,8 +110,8 @@ class _AdvancedExamplePageState extends State<AdvancedExamplePage> {
 
             ElevatedButton(
               onPressed: () {
-                notificationVM.showInfo(
-                  message: 'Long notification (10 seconds)',
+                context.showInfo(
+                  'Long notification (10 seconds)',
                   duration: const Duration(seconds: 10),
                 );
               },

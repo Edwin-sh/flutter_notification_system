@@ -1,3 +1,77 @@
+## 2.0.0
+
+**BREAKING CHANGES** - Nueva API simplificada y auto-configurable
+
+### 🚀 Mejoras Principales
+* **Auto-configuración completa**: Ya no es necesario registrar dependencias manualmente con GetIt
+* **ChangeNotifierProvider incluido**: AppNotificationListener configura todo internamente
+* **Nueva API simplificada**: Dos formas fáciles de mostrar notificaciones
+  - Extensión de BuildContext: `context.showSuccess('mensaje')`
+  - Helper estático: `NotificationSystem.showSuccess('mensaje')`
+* **GetIt interno**: La librería gestiona su propia instancia de GetIt sin conflictos
+* **Menos boilerplate**: De ~30 líneas de configuración a solo 1 widget wrapper
+
+### ✨ Nuevas Características
+* Clase `NotificationSystem` para acceso global sin BuildContext
+* Extensión `NotificationContextExtension` en BuildContext
+* Función helper `getNotificationViewModel()` con auto-inicialización
+* Función `resetNotificationSystem()` para testing y reinicio
+
+### 🔄 Migración desde 1.x
+
+**Antes (v1.x):**
+```dart
+final getIt = GetIt.instance;
+
+void main() {
+  registerNotificationModule(getIt);
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  Widget build(context) => ChangeNotifierProvider.value(
+    value: getIt<NotificationViewModel>(),
+    child: Consumer<NotificationViewModel>(
+      builder: (context, vm, _) {
+        vm.setAppContext(context);
+        return AppNotificationListener(child: MaterialApp(...));
+      },
+    ),
+  );
+}
+
+// Uso
+getIt<NotificationViewModel>().showSuccess(message: 'OK');
+```
+
+**Ahora (v2.0):**
+```dart
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  Widget build(context) => AppNotificationListener(
+    child: MaterialApp(...),
+  );
+}
+
+// Uso - Opción 1
+context.showSuccess('OK');
+
+// Uso - Opción 2
+NotificationSystem.showSuccess('OK');
+```
+
+### ⚠️ Cambios Deprecados
+* `registerNotificationModule()` - Ahora se configura automáticamente
+* `unregisterNotificationModule()` - Usar `resetNotificationSystem()` en su lugar
+* `resetNotificationModule()` - Usar `resetNotificationSystem()` en su lugar
+* Uso manual de GetIt externo - La librería usa su propia instancia interna
+
+### 📝 Notas
+* Los métodos deprecados siguen funcionando para compatibilidad hacia atrás
+* Se recomienda migrar a la nueva API para código más limpio y simple
+* Ejemplos actualizados con la nueva API en el package
+
 ## 1.0.1
 
 * Added comprehensive example app demonstrating all features

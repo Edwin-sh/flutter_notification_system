@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_notification_system/flutter_notification_system.dart';
-import 'package:get_it/get_it.dart';
 
 /// Example demonstrating CRUD operations with notification tracking
 class OperationTrackingExample extends StatefulWidget {
@@ -14,7 +13,6 @@ class OperationTrackingExample extends StatefulWidget {
 class _OperationTrackingExampleState extends State<OperationTrackingExample> {
   bool _isLoading = false;
   final List<String> _items = [];
-  final getIt = GetIt.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +97,6 @@ class _OperationTrackingExampleState extends State<OperationTrackingExample> {
 
   Future<void> _createItem() async {
     setState(() => _isLoading = true);
-    final notificationVM = getIt<NotificationViewModel>();
 
     await Future.delayed(const Duration(seconds: 1));
 
@@ -109,14 +106,13 @@ class _OperationTrackingExampleState extends State<OperationTrackingExample> {
       _isLoading = false;
     });
 
-    notificationVM.showSuccess(message: 'Item created successfully!');
+    NotificationSystem.showSuccess('Item created successfully!');
   }
 
   Future<void> _updateItem() async {
     if (_items.isEmpty) return;
 
     setState(() => _isLoading = true);
-    final notificationVM = getIt<NotificationViewModel>();
 
     await Future.delayed(const Duration(seconds: 1));
 
@@ -125,14 +121,13 @@ class _OperationTrackingExampleState extends State<OperationTrackingExample> {
       _isLoading = false;
     });
 
-    notificationVM.showSuccess(message: 'Item updated successfully!');
+    NotificationSystem.showSuccess('Item updated successfully!');
   }
 
   Future<void> _deleteItem() async {
     if (_items.isEmpty) return;
 
     setState(() => _isLoading = true);
-    final notificationVM = getIt<NotificationViewModel>();
 
     await Future.delayed(const Duration(seconds: 1));
 
@@ -141,18 +136,17 @@ class _OperationTrackingExampleState extends State<OperationTrackingExample> {
       _isLoading = false;
     });
 
-    notificationVM.showSuccess(message: 'Item deleted successfully!');
+    NotificationSystem.showSuccess('Item deleted successfully!');
   }
 
   Future<void> _simulateError() async {
     setState(() => _isLoading = true);
-    final notificationVM = getIt<NotificationViewModel>();
 
     await Future.delayed(const Duration(seconds: 1));
 
     setState(() => _isLoading = false);
 
-    notificationVM.showError(
+    NotificationSystem.showError(
       ErrorItem(
         message: 'Connection timeout. Please check your internet.',
         errorCode: 'NETWORK_ERROR',

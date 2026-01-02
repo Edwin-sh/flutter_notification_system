@@ -19,6 +19,7 @@ Una librería completa de gestión de notificaciones para Flutter que sigue los 
 
 - 🎯 **Type-Safe**: Sistema completamente tipado con Dart
 - 🏗️ **Clean Architecture**: Separación clara de responsabilidades
+- � **Auto-Configurable**: No requiere registro manual de dependencias
 - 📊 **Queue Management**: Cola de notificaciones con sistema de prioridades
 - 🎨 **Personalizable**: Temas, colores, animaciones y builders personalizados
 - 🔄 **Operation Tracking**: Mixin para rastrear resultados de operaciones CRUD
@@ -31,7 +32,6 @@ Una librería completa de gestión de notificaciones para Flutter que sigue los 
 ## 📦 Instalación
 
 Agrega esto a tu `pubspec.yaml`:
-
 
 ```yaml
 dependencies:
@@ -46,178 +46,137 @@ flutter pub get
 
 ## 🚀 Uso Rápido
 
-### 1. Configuración Inicial
+### 1. Configuración Simple (Nueva API)
 
 ```dart
+import 'package:flutter/material.dart';
 import 'package:flutter_notification_system/flutter_notification_system.dart';
-import 'package:get_it/get_it.dart';
 
-final getIt = GetIt.instance;
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  
-  // Registrar módulo de notificaciones
-  registerNotificationModule(getIt);
-  
+void main() {
+  // ¡Ya NO es necesario inicializar GetIt ni registrar módulos!
+  // La librería se encarga de todo automáticamente
   runApp(MyApp());
 }
-```
 
-### 2. Configurar en App Root
-
-```dart
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<NotificationViewModel>.value(
-      value: getIt<NotificationViewModel>(),
-      child: Consumer<NotificationViewModel>(
-        builder: (context, viewModel, _) {
-          viewModel.setAppContext(context);
-          
-          return AppNotificationListener(
-            child: MaterialApp(
-              title: 'Mi App',
-              home: HomePage(),
-            ),
-          );
-        },
+    // Solo envuelve tu app con AppNotificationListener
+    // ¡Eso es todo! La librería configura todo internamente:
+    // - GetIt y sus dependencias
+    // - ChangeNotifierProvider
+    // - Sistema de notificaciones
+    return AppNotificationListener(
+      // Configuración opcional
+      config: NotificationConfig(
+        maxQueueSize: 10,
+      ),
+      child: MaterialApp(
+        title: 'Mi App',
+        home: HomePage(),
       ),
     );
   }
 }
 ```
 
-### 3. Mostrar Notificaciones
+### 2. Mostrar Notificaciones
+
+Ahora tienes **dos formas simples** de mostrar notificaciones:
+
+#### Opción 1: Usando el contexto (BuildContext extension)
 
 ```dart
-// Notificación de éxito
-getIt<NotificationViewModel>().showSuccess(
-  message: 'Operación completada exitosamente',
-);
-
-// Notificación de información
-getIt<NotificationViewModel>().showInfo(
-  message: 'Datos actualizados',
-);
-
-// Notificación de advertencia
-getIt<NotificationViewModel>().showWarning(
-  message: 'Verifique los datos ingresados',
-);
-
-// Notificación de error desde ErrorItem
-getIt<NotificationViewModel>().showError(
-  ErrorItem(
-    message: 'No se pudo guardar el registro',
-    title: 'Error de Base de Datos',
-    errorLevel: ErrorLevelEnum.severe,
-  ),
-);
-```
-
-### 4. Uso con ViewModels y OperationResultMixin
-
-```dart
-class PatientViewModel extends ChangeNotifier with OperationResultMixin {
-  final SavePatientUseCase _savePatientUseCase;
-
-  PatientViewModel(this._savePatientUseCase);
-
-  Future<void> savePatient(Patient patient) async {
-    final result = await _savePatientUseCase(patient);
-    
-    result.fold(
-      (error) => setOperationFailure(OperationFailure(error)),
-      (_) => setOperationSuccess(
-        OperationSuccess('Paciente guardado exitosamente'),
-      ),
-    );
-  }
-}
-
-// En tu widget
-class PatientFormPage extends StatelessWidget {
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<PatientViewModel>.value(
-      value: getIt<PatientViewModel>(),
-      child: Consumer<PatientViewModel>(
-        builder: (context, viewModel, _) {
-          // Escuchar resultados de operaciones
-          final success = viewModel.operationSuccess;
-          final failure = viewModel.operationFailure;
-
-          if (success != null) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              getIt<NotificationViewModel>().showSuccess(
-                message: success.message,
-              );
-              Navigator.pop(context);
-            });
-          } else if (failure != null) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              getIt<NotificationViewModel>().showError(
-                failure.errorItem,
-              );
-            });
-          }
-
-          return Scaffold(
-            appBar: AppBar(title: Text('Paciente')),
-            body: PatientForm(viewModel: viewModel),
-          );
-        },
-      ),
+    return ElevatedButton(
+      onPressed: () {
+        // Método 1: Extensión de BuildContext
+        context.showSuccess('¡Operación exitosa!');
+        context.showError(ErrorItem(message: 'Error al guardar'));
+        context.showWarning('Advertencia de seguridad');
+        context.showInfo('Nueva actualización disponible');
+      },
+      child: Text('Mostrar notificación'),
     );
   }
 }
+```
+
+#### Opción 2: Usando el helper estático (desde cualquier lugar)
+
+```dart
+// Puedes usar NotificationSystem desde cualquier parte del código
+// incluso fuera de widgets o sin BuildContext
+class MyService {
+  Future<void> saveData() async {
+    try {
+      await api.save();
+      NotificationSystem.showSuccess('Datos guardados correctamente');
+    } catch (e) {
+      NotificationSystem.showError(
+        ErrorItem(message: 'Error al guardar: $e'),
+      );
+    }
+  }
+}
+```
+
+### 3. Notificaciones con Prioridades
+
+```dart
+// Prioridad baja
+context.showInfo(
+  'Sincronización en segundo plano',
+  priority: NotificationPriority.low,
+);
+
+// Prioridad alta
+NotificationSystem.showWarning(
+  'Batería baja',
+  priority: NotificationPriority.high,
+);
+
+// Prioridad crítica (interrumpe otras notificaciones)
+context.showError(
+  ErrorItem(
+    message: 'Conexión perdida',
+    errorLevel: ErrorLevelEnum.critical,
+  ),
+  priority: NotificationPriority.critical,
+);
+```
+
+### 4. Duraciones Personalizadas
+
+```dart
+// Notificación corta (1 segundo)
+NotificationSystem.showSuccess(
+  'Guardado',
+  duration: const Duration(seconds: 1),
+);
+
+// Notificación larga (10 segundos)
+context.showInfo(
+  'Leyendo documentación importante...',
+  duration: const Duration(seconds: 10),
+);
 ```
 
 ## 🎨 Personalización
 
-### Configuración Global
+### Configuración al Inicializar
 
 ```dart
-void main() {
-  // Configurar antes de iniciar la app
-  NotificationConfig.global = NotificationConfig(
-    successDuration: Duration(seconds: 3),
-    errorDuration: null, // null = manual
-    warningDuration: Duration(seconds: 4),
-    infoDuration: Duration(seconds: 2),
-    maxQueueSize: 5,
-    animationDuration: Duration(milliseconds: 300),
-    showCloseButton: true,
-    enableAnimations: true,
-    enableSwipeToDismiss: true,
-  );
-
-  runApp(MyApp());
-}
-```
-
-### Tema Personalizado
-
-```dart
-// Tema claro personalizado
-NotificationTheme.current = NotificationTheme(
-  successColor: Color(0xFF4CAF50),
-  errorColor: Color(0xFFF44336),
-  warningColor: Color(0xFFFF9800),
-  infoColor: Color(0xFF2196F3),
-  borderRadius: 12.0,
-  elevation: 8.0,
-  titleStyle: TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.bold,
-    color: Colors.white,
+AppNotificationListener(
+  config: NotificationConfig(
+    maxQueueSize: 10,
+    // Otras opciones de configuración...
   ),
-);
-
-// O usar tema oscuro predefinido
-NotificationTheme.current = NotificationTheme.dark;
+  theme: NotificationTheme.dark(), // Tema oscuro
+  child: MaterialApp(...),
+)
 ```
 
 ### Widget Personalizado
@@ -249,29 +208,49 @@ AppNotificationListener(
 )
 ```
 
-### Notificaciones con Prioridad
+## 🔄 Migración desde v1.x
 
+Si estás actualizando desde la versión 1.x, aquí está el cambio:
+
+### Antes (v1.x)
 ```dart
-// Prioridad baja
-getIt<NotificationViewModel>().showInfo(
-  message: 'Sincronización en segundo plano',
-  priority: NotificationPriority.low,
-);
+final getIt = GetIt.instance;
 
-// Prioridad alta
-getIt<NotificationViewModel>().showWarning(
-  message: 'Batería baja',
-  priority: NotificationPriority.high,
-);
+void main() {
+  registerNotificationModule(getIt);
+  runApp(MyApp());
+}
 
-// Prioridad crítica (interrumpe otras notificaciones)
-getIt<NotificationViewModel>().showError(
-  ErrorItem(
-    message: 'Conexión perdida',
-    errorLevel: ErrorLevelEnum.critical,
-  ),
-  priority: NotificationPriority.critical,
-);
+class MyApp extends StatelessWidget {
+  Widget build(context) => ChangeNotifierProvider.value(
+    value: getIt<NotificationViewModel>(),
+    child: Consumer<NotificationViewModel>(
+      builder: (context, vm, _) {
+        vm.setAppContext(context);
+        return AppNotificationListener(child: MaterialApp(...));
+      },
+    ),
+  );
+}
+
+// Uso
+getIt<NotificationViewModel>().showSuccess(message: 'OK');
+```
+
+### Ahora (v2.0)
+```dart
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  Widget build(context) => AppNotificationListener(
+    child: MaterialApp(...),
+  );
+}
+
+// Uso
+context.showSuccess('OK');
+// o
+NotificationSystem.showSuccess('OK');
 ```
 
 ## 🧪 Testing
@@ -285,11 +264,11 @@ void main() {
     late NotificationViewModel viewModel;
 
     setUp(() {
-      viewModel = NotificationViewModel();
+      viewModel = getNotificationViewModel();
     });
 
     tearDown(() {
-      viewModel.dispose();
+      resetNotificationSystem();
     });
 
     test('should show notification', () {
@@ -331,24 +310,24 @@ lib/
 └── flutter_notification_system.dart
 ```
 
-## 📚 Ejemplos Avanzados
+## 📚 Ejemplos
 
-Ver la carpeta `/example` para ejemplos completos de:
-- Integración con Clean Architecture
-- CRUD con notificaciones automáticas
-- Personalización de temas
-- Testing completo
-- Manejo de errores
+Ver la carpeta `/example` para ejemplos completos que demuestran:
+- ✅ Uso básico con las dos APIs (context y NotificationSystem)
+- ✅ Notificaciones con diferentes prioridades
+- ✅ Duraciones personalizadas
+- ✅ Gestión de cola de notificaciones
+- ✅ Personalización de temas y animaciones
 
-## 🤝 Mejoras sobre el Sistema Original
+## 🤝 Ventajas de la v2.0
 
-1. **Sistema de Prioridades**: Cola inteligente que prioriza notificaciones críticas
-2. **Mejor Configuración**: Configuración global y por notificación
-3. **Más Personalizable**: Temas, animaciones y builders personalizados
-4. **Testing Mejorado**: Cobertura completa con tests unitarios
-5. **Mejor Performance**: Optimizaciones en la cola y listeners
-6. **Más Tipos de Widgets**: Múltiples estilos de SnackBars y Dialogs
-7. **Documentación Completa**: Ejemplos y guías detalladas
+1. **🚀 Configuración Instantánea**: De ~30 líneas a 1 widget wrapper
+2. **💡 API Intuitiva**: Dos formas simples de mostrar notificaciones
+3. **🔒 Sin Conflictos**: GetIt interno no interfiere con tu GetIt global
+4. **📦 Auto-Contenida**: La librería maneja todas sus dependencias
+5. **🎯 BuildContext Extension**: Sintaxis natural y familiar
+6. **🌍 Helper Estático**: Acceso desde cualquier lugar sin contexto
+7. **🔄 Retrocompatible**: Los métodos antiguos siguen funcionando
 
 ## 📄 Licencia
 
@@ -356,6 +335,6 @@ MIT License - ver [LICENSE](LICENSE) para detalles.
 
 ---
 
-**Versión**: 1.0.0  
+**Versión**: 2.0.0  
 **Fecha**: Enero 2026  
-**Autor**: Sistema mejorado para proyectos Flutter empresariales
+**Cambios**: Sistema auto-configurable con API simplificada

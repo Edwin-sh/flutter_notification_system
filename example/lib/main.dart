@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_notification_system/flutter_notification_system.dart';
-import 'package:get_it/get_it.dart';
-import 'package:provider/provider.dart';
 
-final getIt = GetIt.instance;
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // Register notification module
-  registerNotificationModule(getIt);
-
+void main() {
+  // Ya NO es necesario inicializar GetIt ni registrar el módulo
+  // La librería se encarga de todo automáticamente
   runApp(const MyApp());
 }
 
@@ -19,23 +12,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<NotificationViewModel>.value(
-      value: getIt<NotificationViewModel>(),
-      child: Consumer<NotificationViewModel>(
-        builder: (context, viewModel, _) {
-          viewModel.setAppContext(context);
-
-          return AppNotificationListener(
-            child: MaterialApp(
-              title: 'Flutter Notification System Example',
-              theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-                useMaterial3: true,
-              ),
-              home: const ExampleHomePage(),
-            ),
-          );
-        },
+    // Solo es necesario envolver con AppNotificationListener
+    // El listener se encarga de:
+    // - Registrar GetIt automáticamente
+    // - Configurar ChangeNotifierProvider
+    // - Escuchar y mostrar notificaciones
+    return AppNotificationListener(
+      // Configuración opcional del sistema
+      config: NotificationConfig(maxQueueSize: 10),
+      // Tema opcional personalizado
+      // theme: NotificationTheme.dark(),
+      child: MaterialApp(
+        title: 'Flutter Notification System Example',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+          useMaterial3: true,
+        ),
+        home: const ExampleHomePage(),
       ),
     );
   }
@@ -46,8 +39,6 @@ class ExampleHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notificationVM = getIt<NotificationViewModel>();
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -65,15 +56,13 @@ class ExampleHomePage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
 
-              // Success notification
+              // Método 1: Usando BuildContext extension
               ElevatedButton.icon(
                 onPressed: () {
-                  notificationVM.showSuccess(
-                    message: 'Operation completed successfully!',
-                  );
+                  context.showSuccess('Operation completed successfully!');
                 },
                 icon: const Icon(Icons.check_circle),
-                label: const Text('Show Success'),
+                label: const Text('Success (usando context)'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
                   foregroundColor: Colors.white,
@@ -81,15 +70,15 @@ class ExampleHomePage extends StatelessWidget {
               ),
               const SizedBox(height: 12),
 
-              // Error notification
+              // Método 2: Usando NotificationSystem estático
               ElevatedButton.icon(
                 onPressed: () {
-                  notificationVM.showError(
+                  NotificationSystem.showError(
                     ErrorItem(message: 'An error occurred. Please try again.'),
                   );
                 },
                 icon: const Icon(Icons.error),
-                label: const Text('Show Error'),
+                label: const Text('Error (usando NotificationSystem)'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
                   foregroundColor: Colors.white,
@@ -100,9 +89,7 @@ class ExampleHomePage extends StatelessWidget {
               // Warning notification
               ElevatedButton.icon(
                 onPressed: () {
-                  notificationVM.showWarning(
-                    message: 'This is a warning message.',
-                  );
+                  context.showWarning('This is a warning message!');
                 },
                 icon: const Icon(Icons.warning),
                 label: const Text('Show Warning'),
@@ -116,12 +103,13 @@ class ExampleHomePage extends StatelessWidget {
               // Info notification
               ElevatedButton.icon(
                 onPressed: () {
-                  notificationVM.showInfo(
-                    message: 'Here is some useful information.',
+                  NotificationSystem.showInfo(
+                    'This is an informative message',
+                    duration: const Duration(seconds: 4),
                   );
                 },
                 icon: const Icon(Icons.info),
-                label: const Text('Show Info'),
+                label: const Text('Info (usando helper)'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                   foregroundColor: Colors.white,
@@ -141,7 +129,7 @@ class ExampleHomePage extends StatelessWidget {
               // Critical priority
               ElevatedButton.icon(
                 onPressed: () {
-                  notificationVM.showError(
+                  context.showError(
                     ErrorItem(message: 'Critical: Immediate action required!'),
                     priority: NotificationPriority.critical,
                   );
@@ -158,38 +146,13 @@ class ExampleHomePage extends StatelessWidget {
               // High priority
               ElevatedButton.icon(
                 onPressed: () {
-                  notificationVM.showWarning(
-                    message: 'High priority notification',
+                  NotificationSystem.showWarning(
+                    'High priority notification',
                     priority: NotificationPriority.high,
                   );
                 },
                 icon: const Icon(Icons.arrow_upward),
                 label: const Text('High Priority'),
-              ),
-              const SizedBox(height: 32),
-
-              const Divider(),
-              const SizedBox(height: 16),
-
-              const Text(
-                'Dialog Notifications',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
-
-              // Dialog with action
-              ElevatedButton.icon(
-                onPressed: () {
-                  notificationVM.showError(
-                    ErrorItem(
-                      message:
-                          'Are you sure you want to proceed? This action cannot be undone.',
-                    ),
-                    priority: NotificationPriority.critical,
-                  );
-                },
-                icon: const Icon(Icons.question_answer),
-                label: const Text('Show Dialog'),
               ),
               const SizedBox(height: 32),
 
@@ -205,13 +168,26 @@ class ExampleHomePage extends StatelessWidget {
               // Long duration
               ElevatedButton.icon(
                 onPressed: () {
-                  notificationVM.showInfo(
-                    message: 'This notification will stay for 5 seconds',
+                  context.showInfo(
+                    'This notification will stay for 5 seconds',
                     duration: const Duration(seconds: 5),
                   );
                 },
                 icon: const Icon(Icons.timer),
                 label: const Text('Long Duration (5s)'),
+              ),
+              const SizedBox(height: 12),
+
+              // Short duration
+              ElevatedButton.icon(
+                onPressed: () {
+                  NotificationSystem.showSuccess(
+                    'Quick message!',
+                    duration: const Duration(seconds: 1),
+                  );
+                },
+                icon: const Icon(Icons.flash_on),
+                label: const Text('Short Duration (1s)'),
               ),
             ],
           ),

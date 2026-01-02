@@ -10,8 +10,7 @@ class CustomDialog extends StatelessWidget {
   final NotificationData notification;
   final NotificationTheme? theme;
 
-  const CustomDialog({Key? key, required this.notification, this.theme})
-    : super(key: key);
+  const CustomDialog({super.key, required this.notification, this.theme});
 
   @override
   Widget build(BuildContext context) {

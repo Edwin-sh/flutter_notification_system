@@ -8,11 +8,10 @@ import '../utils/notification_theme.dart';
 /// las notificaciones tipo SnackBar.
 class CustomSnackBar extends SnackBar {
   CustomSnackBar({
-    Key? key,
+    super.key,
     required NotificationData notification,
     NotificationTheme? theme,
   }) : super(
-         key: key,
          content: _buildContent(notification, theme),
          backgroundColor: _getBackgroundColor(notification, theme),
          duration: notification.duration ?? const Duration(seconds: 2),
