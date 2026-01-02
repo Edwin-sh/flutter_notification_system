@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_clean_mvvm_toolkit/flutter_clean_mvvm_toolkit.dart';
 import 'package:provider/provider.dart';
-import '../models/error_item.dart';
 import '../models/notification_priority.dart';
 import '../models/notification_type.dart';
 import '../view_models/notification_view_model.dart';

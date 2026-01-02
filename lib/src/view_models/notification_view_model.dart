@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_clean_mvvm_toolkit/flutter_clean_mvvm_toolkit.dart';
 import '../models/notification_data.dart';
 import '../models/notification_type.dart';
 import '../models/notification_priority.dart';
 import '../models/notification_config.dart';
-import '../models/error_item.dart';
 import '../utils/notification_queue.dart';
 
 /// ViewModel para gestión centralizada de notificaciones
