@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_clean_mvvm_toolkit/flutter_clean_mvvm_toolkit.dart';
 import 'package:flutter_notification_system/flutter_notification_system.dart';
 
 void main() {
@@ -74,7 +75,7 @@ class ExampleHomePage extends StatelessWidget {
               ElevatedButton.icon(
                 onPressed: () {
                   NotificationSystem.showError(
-                    ErrorItem(message: 'An error occurred. Please try again.'),
+                    ErrorItem(title: 'Error', message: 'An error occurred. Please try again.', code: ErrorCode.unknownError),
                   );
                 },
                 icon: const Icon(Icons.error),
@@ -130,7 +131,7 @@ class ExampleHomePage extends StatelessWidget {
               ElevatedButton.icon(
                 onPressed: () {
                   context.showError(
-                    ErrorItem(message: 'Critical: Immediate action required!'),
+                    ErrorItem(title: 'Error', message: 'Critical: Immediate action required!', code: ErrorCode.unknownError),
                     priority: NotificationPriority.critical,
                   );
                 },

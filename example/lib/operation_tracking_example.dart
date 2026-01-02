@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_clean_mvvm_toolkit/flutter_clean_mvvm_toolkit.dart';
 import 'package:flutter_notification_system/flutter_notification_system.dart';
 
 /// Example demonstrating CRUD operations with notification tracking
@@ -148,8 +149,9 @@ class _OperationTrackingExampleState extends State<OperationTrackingExample> {
 
     NotificationSystem.showError(
       ErrorItem(
+        title: 'Error',
         message: 'Connection timeout. Please check your internet.',
-        errorCode: 'NETWORK_ERROR',
+        code: ErrorCode.networkError,
         errorLevel: ErrorLevelEnum.severe,
       ),
     );
