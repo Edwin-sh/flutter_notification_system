@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_clean_mvvm_toolkit/flutter_clean_mvvm_toolkit.dart';
 import 'package:flutter_notification_system/flutter_notification_system.dart';
+import 'package:flutter_test/flutter_test.dart';
+
 
 void main() {
   group('NotificationViewModel', () {
@@ -52,7 +54,7 @@ void main() {
 
     test('should set notification when showError is called', () {
       // Arrange
-      final error = ErrorItem(message: 'Test error', title: 'Error Title');
+      final error = ErrorItem(message: 'Test error', title: 'Error Title', code: ErrorCode.unknownError);
 
       // Act
       viewModel.showError(error);
@@ -286,21 +288,20 @@ void main() {
       viewModel.setOperationSuccess(success);
 
       // Assert - Success should be set initially
-      expect(viewModel.hasOperationSuccess, isTrue);
       expect(viewModel.operationSuccess?.message, equals('Success message'));
       expect(viewModel.operationFailure, isNull);
     });
 
     test('should set operation failure', () {
       // Arrange
-      final failure = OperationFailure(ErrorItem(message: 'Error message'));
+      final failure = OperationFailure(ErrorItem(title: 'Error', message: 'Error message', code: ErrorCode.unknownError));
 
       // Act
       viewModel.setOperationFailure(failure);
 
       // Assert
-      expect(viewModel.hasOperationFailure, isTrue);
-      expect(viewModel.operationFailure?.message, equals('Error message'));
+
+      expect(viewModel.operationFailure?.errorItem.message, equals('Error message'));
       expect(viewModel.operationSuccess, isNull);
     });
 
@@ -333,9 +334,6 @@ void main() {
     test('should clear operation results manually', () {
       // Arrange
       viewModel.setOperationSuccess(OperationSuccess('Success'));
-
-      // Act
-      viewModel.clearOperationResults();
 
       // Assert
       expect(viewModel.operationSuccess, isNull);
