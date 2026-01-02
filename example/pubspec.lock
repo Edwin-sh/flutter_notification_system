@@ -70,6 +70,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_clean_mvvm_toolkit:
+    dependency: "direct main"
+    description:
+      name: flutter_clean_mvvm_toolkit
+      sha256: "63b408dd167a865a50b50e059c839a20866d251ce0918d9bd48a2d384a2e9bf6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -84,7 +92,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "1.0.1"
+    version: "2.0.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter

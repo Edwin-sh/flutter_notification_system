@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'error_item.dart';
+import 'package:flutter_clean_mvvm_toolkit/flutter_clean_mvvm_toolkit.dart';
 import 'notification_type.dart';
 import 'notification_priority.dart';
 

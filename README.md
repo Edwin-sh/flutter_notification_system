@@ -35,7 +35,7 @@ Agrega esto a tu `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_notification_system: ^1.0.0
+  flutter_notification_system: ^3.0.0
 ```
 
 Luego ejecuta:
@@ -94,7 +94,11 @@ class HomePage extends StatelessWidget {
       onPressed: () {
         // Método 1: Extensión de BuildContext
         context.showSuccess('¡Operación exitosa!');
-        context.showError(ErrorItem(message: 'Error al guardar'));
+        context.showError(ErrorItem(
+          title: 'Error',
+          message: 'Error al guardar',
+          code: ErrorCode.unknownError,
+        ));
         context.showWarning('Advertencia de seguridad');
         context.showInfo('Nueva actualización disponible');
       },
@@ -116,7 +120,11 @@ class MyService {
       NotificationSystem.showSuccess('Datos guardados correctamente');
     } catch (e) {
       NotificationSystem.showError(
-        ErrorItem(message: 'Error al guardar: $e'),
+        ErrorItem(
+          title: 'Error',
+          message: 'Error al guardar: $e',
+          code: ErrorCode.unknownError,
+        ),
       );
     }
   }
@@ -141,7 +149,9 @@ NotificationSystem.showWarning(
 // Prioridad crítica (interrumpe otras notificaciones)
 context.showError(
   ErrorItem(
+    title: 'Error Crítico',
     message: 'Conexión perdida',
+    code: ErrorCode.networkError,
     errorLevel: ErrorLevelEnum.critical,
   ),
   priority: NotificationPriority.critical,

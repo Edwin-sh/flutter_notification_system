@@ -1,3 +1,11 @@
+## 3.0.0
+
+**BREAKING CHANGES** - Integración con `flutter_clean_mvvm_toolkit`
+
+### 🚀 Mejoras Principales
+* **Integración con `flutter_clean_mvvm_toolkit`**: Se han reemplazado los modelos internos `ErrorItem` y `OperationResult` por los de la librería `flutter_clean_mvvm_toolkit` para una mejor interoperabilidad y estandarización.
+* **Limpieza de código**: Eliminación de modelos redundantes y mixins que ahora son proporcionados por el toolkit.
+
 ## 2.0.0
 
 **BREAKING CHANGES** - Nueva API simplificada y auto-configurable

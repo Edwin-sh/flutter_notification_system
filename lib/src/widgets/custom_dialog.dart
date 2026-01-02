@@ -39,7 +39,7 @@ class CustomDialog extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(notification.message, style: const TextStyle(fontSize: 16)),
-          if (notification.error?.technicalDetails != null) ...[
+          if (notification.error?.message != null) ...[
             const SizedBox(height: 16),
             ExpansionTile(
               title: const Text(
@@ -50,7 +50,7 @@ class CustomDialog extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SelectableText(
-                    notification.error!.technicalDetails!,
+                    notification.error!.message,
                     style: const TextStyle(
                       fontSize: 12,
                       fontFamily: 'monospace',

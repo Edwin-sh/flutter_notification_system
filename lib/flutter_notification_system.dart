@@ -53,12 +53,10 @@ export 'src/models/notification_data.dart';
 export 'src/models/notification_type.dart';
 export 'src/models/notification_priority.dart';
 export 'src/models/notification_config.dart';
-export 'src/models/operation_result.dart';
-export 'src/models/error_item.dart';
+
 
 // ViewModels
 export 'src/view_models/notification_view_model.dart';
-export 'src/view_models/operation_result_mixin.dart';
 
 // Widgets
 export 'src/widgets/notification_listener.dart';

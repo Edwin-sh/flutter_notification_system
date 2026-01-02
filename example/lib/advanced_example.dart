@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_clean_mvvm_toolkit/flutter_clean_mvvm_toolkit.dart';
 import 'package:flutter_notification_system/flutter_notification_system.dart';
 
 /// Advanced example demonstrating queue management and priorities
@@ -53,7 +54,7 @@ class _AdvancedExamplePageState extends State<AdvancedExamplePage> {
             ElevatedButton(
               onPressed: () {
                 context.showError(
-                  ErrorItem(message: 'Critical error occurred!'),
+                  ErrorItem(title: 'Error', message: 'Critical error occurred!', code: ErrorCode.unknownError),
                   priority: NotificationPriority.critical,
                 );
               },
