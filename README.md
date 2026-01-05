@@ -35,7 +35,7 @@ Agrega esto a tu `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_notification_system: ^3.0.0
+  flutter_notification_system: ^3.0.1
 ```
 
 Luego ejecuta:
@@ -345,6 +345,6 @@ MIT License - ver [LICENSE](LICENSE) para detalles.
 
 ---
 
-**Versión**: 3.0.0  
+**Versión**: 3.0.1  
 **Fecha**: Enero 2026  
 **Cambios**: Integración con Clean MVVM Toolkit y modelos estandarizados.

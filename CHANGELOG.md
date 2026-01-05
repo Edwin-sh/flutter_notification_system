@@ -1,4 +1,4 @@
-## 3.0.0 (2026-01-05)
+## 3.0.1 (2026-01-05)
 
 **BREAKING CHANGES** - Integración con `flutter_clean_mvvm_toolkit`
 

@@ -1,6 +1,6 @@
 name: flutter_notification_system
 description: "Self-configuring notification system for Flutter with Clean Architecture. Auto-setup with GetIt, Provider, multiple notification types, queue management, and customizable themes."
-version: 3.0.0
+version: 3.0.1
 repository: https://github.com/Edwin-sh/flutter_notification_system
 
 environment:
