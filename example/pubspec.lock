@@ -74,10 +74,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_clean_mvvm_toolkit
-      sha256: "63b408dd167a865a50b50e059c839a20866d251ce0918d9bd48a2d384a2e9bf6"
+      sha256: "1f7a98cef02077fcb2e515a77a96b7a5f215a67424d7e68494cc25a1a4913e18"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.0"
+    version: "0.2.0"
   flutter_lints:
     dependency: "direct dev"
     description:

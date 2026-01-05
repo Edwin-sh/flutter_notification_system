@@ -48,6 +48,8 @@ flutter pub get
 
 ### 1. Configuración Simple (Nueva API)
 
+La librería ahora se integra nativamente con `flutter_clean_mvvm_toolkit`, utilizando sus modelos estandarizados para errores y resultados de operaciones.
+
 ```dart
 import 'package:flutter/material.dart';
 import 'package:flutter_notification_system/flutter_notification_system.dart';
@@ -300,12 +302,9 @@ lib/
 │   │   ├── notification_data.dart
 │   │   ├── notification_type.dart
 │   │   ├── notification_priority.dart
-│   │   ├── notification_config.dart
-│   │   ├── operation_result.dart
-│   │   └── error_item.dart
+│   │   └── notification_config.dart
 │   ├── view_models/         # Lógica de presentación
-│   │   ├── notification_view_model.dart
-│   │   └── operation_result_mixin.dart
+│   │   └── notification_view_model.dart
 │   ├── widgets/             # Componentes UI
 │   │   ├── notification_listener.dart
 │   │   ├── notification_presenter.dart
@@ -314,7 +313,8 @@ lib/
 │   ├── utils/               # Utilidades
 │   │   ├── notification_queue.dart
 │   │   ├── notification_theme.dart
-│   │   └── notification_animations.dart
+│   │   ├── notification_animations.dart
+│   │   └── notification_helpers.dart
 │   └── di/                  # Inyección de dependencias
 │       └── notification_di.dart
 └── flutter_notification_system.dart
@@ -329,15 +329,15 @@ Ver la carpeta `/example` para ejemplos completos que demuestran:
 - ✅ Gestión de cola de notificaciones
 - ✅ Personalización de temas y animaciones
 
-## 🤝 Ventajas de la v2.0
+## 🤝 Ventajas de la v3.0
 
-1. **🚀 Configuración Instantánea**: De ~30 líneas a 1 widget wrapper
-2. **💡 API Intuitiva**: Dos formas simples de mostrar notificaciones
-3. **🔒 Sin Conflictos**: GetIt interno no interfiere con tu GetIt global
-4. **📦 Auto-Contenida**: La librería maneja todas sus dependencias
-5. **🎯 BuildContext Extension**: Sintaxis natural y familiar
-6. **🌍 Helper Estático**: Acceso desde cualquier lugar sin contexto
-7. **🔄 Retrocompatible**: Los métodos antiguos siguen funcionando
+1. **🔗 Integración con Toolkit**: Interoperabilidad nativa con `flutter_clean_mvvm_toolkit`.
+2. **🚀 Configuración Instantánea**: De ~30 líneas a 1 widget wrapper.
+3. **💡 API Intuitiva**: Dos formas simples de mostrar notificaciones.
+4. **🔒 Sin Conflictos**: GetIt interno no interfiere con tu GetIt global.
+5. **📦 Auto-Contenida**: La librería maneja todas sus dependencias.
+6. **🎯 BuildContext Extension**: Sintaxis natural y familiar.
+7. **🌍 Helper Estático**: Acceso desde cualquier lugar sin contexto.
 
 ## 📄 Licencia
 
@@ -345,6 +345,6 @@ MIT License - ver [LICENSE](LICENSE) para detalles.
 
 ---
 
-**Versión**: 2.0.0  
+**Versión**: 3.0.0  
 **Fecha**: Enero 2026  
-**Cambios**: Sistema auto-configurable con API simplificada
+**Cambios**: Integración con Clean MVVM Toolkit y modelos estandarizados.
