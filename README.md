@@ -38,6 +38,10 @@ dependencies:
   flutter_notification_system: ^3.0.1
 ```
 
+### 📌 Compatibilidad
+
+Esta librería utiliza `get_it: ^8.0.3` para garantizar la máxima compatibilidad con otros paquetes en tu proyecto. Si estás usando otros paquetes que dependen de versiones más antiguas de GetIt, esta versión permitirá una mejor convivencia entre dependencias.
+
 Luego ejecuta:
 
 ```bash
