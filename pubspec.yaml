@@ -1,6 +1,6 @@
 name: flutter_notification_system
 description: "Self-configuring notification system for Flutter with Clean Architecture. Auto-setup with GetIt, Provider, multiple notification types, queue management, and customizable themes."
-version: 3.0.1
+version: 3.0.2
 repository: https://github.com/Edwin-sh/flutter_notification_system
 
 environment:
@@ -27,8 +27,8 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
-flutter:
-
+# flutter:
+  
   # To add assets to your package, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
