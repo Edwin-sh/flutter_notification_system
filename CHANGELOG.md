@@ -1,3 +1,9 @@
+## 3.0.2 (2026-01-08)
+
+### 🔄 Mejoras de Compatibilidad
+* **Actualización de get_it**: Se actualizó `get_it` a la versión `^8.0.3` para mejorar la compatibilidad con otros paquetes que puedan usar versiones más antiguas de GetIt.
+* **Convivencia mejorada**: Esta actualización permite que la librería coexista sin conflictos con otros proyectos que tengan diferentes versiones de get_it como dependencia.
+
 ## 3.0.1 (2026-01-05)
 
 **BREAKING CHANGES** - Integración con `flutter_clean_mvvm_toolkit`
