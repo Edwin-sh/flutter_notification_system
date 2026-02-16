@@ -35,7 +35,7 @@ Agrega esto a tu `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_notification_system: ^3.0.1
+  flutter_notification_system: ^3.0.2
 ```
 
 ### 📌 Compatibilidad
